@@ -17,6 +17,7 @@
 
 ## 3. 분석 환경
 * **OS:** Windows 10 Pro 22H2 (VirtualBox)
+* **주요 사용 도구:** vbsedit, sublime text, LLM (코드 난독화 해제 보조)
 
 ## 4. 실행 흐름도 (Execution Flow)
 <img src="https://github.com/user-attachments/assets/4f25d88b-e5a7-4309-88cb-c98e71b65a68" width="500" alt="실행 흐름도">
