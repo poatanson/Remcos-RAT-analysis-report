@@ -13,7 +13,7 @@
   * MD5: `f5b1c1919f175fce913df143accf44a3`
   * SHA-1: `8b3f6d2217b736d5bbe69de37a3dd95ee058151b`
   * SHA-256: `c5103eaa70a4a80176440a0e0dc75136a0e7bcfd9a68d7c8440a4d0edea72011`
-* **파일 타입:** CSV text
+* **파일 타입:** VBScript
 
 ## 3. 분석 환경
 * **OS:** Windows 10 Pro 22H2 (VirtualBox)
