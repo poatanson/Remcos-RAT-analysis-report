@@ -8,7 +8,7 @@
 
 ## 2. 기본 정보 (File Details)
 * **파일명:** `c5103eaa70a4a80176440a0e0dc75136a0e7bcfd9a68d7c8440a4d0edea72011.vbs` (또는 실제 확장자)
-* **파일 크기:** 42 MB
+* **파일 크기:** 40 MB
 * **해시:**
   * MD5: `f5b1c1919f175fce913df143accf44a3`
   * SHA-1: `8b3f6d2217b736d5bbe69de37a3dd95ee058151b`
