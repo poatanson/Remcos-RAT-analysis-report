@@ -19,7 +19,7 @@
 * **OS:** Windows 10 Pro 22H2 (VirtualBox)
 
 ## 4. 실행 흐름도 (Execution Flow)
-<img src="https://github.com/user-attachments/assets/4f25d88b-e5a7-4309-88cb-c98e71b65a68" width="550" alt="실행 흐름도">
+<img src="https://github.com/user-attachments/assets/4f25d88b-e5a7-4309-88cb-c98e71b65a68" width="500" alt="실행 흐름도">
 
 ## 5. 주요 기술적 특징 (Technical Analysis)
 
