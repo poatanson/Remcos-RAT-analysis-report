@@ -20,16 +20,18 @@
 * **주요 사용 도구:** vbsedit, sublime text, LLM (코드 난독화 해제 보조)
 
 ## 4. 실행 흐름도 (Execution Flow)
+## 4. 실행 흐름도 (Execution Flow)
+
 ```mermaid
 flowchart TD
-    subgraph Dropper_Phase ["🔴 1단계: 드로퍼 실행 및 WMI 프로세스 생성"]
+    subgraph Dropper_Phase ["1단계: 드로퍼 실행 및 WMI 프로세스 생성"]
         direction TB
-        A["1. Initial Dropper Execution<br/>악성 스립트 실행 및 난독화 해제"] 
+        A["1. Initial Dropper Execution<br/>악성 스크립트 실행 및 난독화 해제"] 
         --> B["2. WMI Process Creation<br/>Win32_ProcessStartup<br/>- P1~P37 환경변수 주입<br/>- SW_HIDE 창 숨김 설정"]
         --> C["3. Hidden PowerShell Execution<br/>Win32_Process.Create<br/>백그라운드 PowerShell 실행"]
     end
 
-    subgraph Payload_Phase [" 2단계: PowerShell 파일리스 페이로드 실행"]
+    subgraph Payload_Phase ["2단계: PowerShell 파일리스 페이로드 실행"]
         direction TB
         D["4. Payload Reassembly<br/>환경변수(P1~P37) 읽기 및<br/>Base64 문자열 재조합"] 
         --> E["5. Fileless Execution<br/>Reflection.Assembly::Load<br/>디스크 없이 메모리에 DLL 로드"]
