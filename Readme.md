@@ -20,7 +20,31 @@
 * **주요 사용 도구:** vbsedit, sublime text, LLM (코드 난독화 해제 보조)
 
 ## 4. 실행 흐름도 (Execution Flow)
-<img src="https://github.com/user-attachments/assets/4f25d88b-e5a7-4309-88cb-c98e71b65a68" width="500" alt="실행 흐름도">
+```mermaid
+flowchart TD
+    subgraph Dropper_Phase ["🔴 1단계: 드로퍼 실행 및 WMI 프로세스 생성"]
+        direction TB
+        A["1. Initial Dropper Execution<br/>악성 스립트 실행 및 난독화 해제"] 
+        --> B["2. WMI Process Creation<br/>Win32_ProcessStartup<br/>- P1~P37 환경변수 주입<br/>- SW_HIDE 창 숨김 설정"]
+        --> C["3. Hidden PowerShell Execution<br/>Win32_Process.Create<br/>백그라운드 PowerShell 실행"]
+    end
+
+    subgraph Payload_Phase [" 2단계: PowerShell 파일리스 페이로드 실행"]
+        direction TB
+        D["4. Payload Reassembly<br/>환경변수(P1~P37) 읽기 및<br/>Base64 문자열 재조합"] 
+        --> E["5. Fileless Execution<br/>Reflection.Assembly::Load<br/>디스크 없이 메모리에 DLL 로드"]
+        --> F["6. RAT Injection & C2<br/>Remcos RAT 메모리 인젝션/드롭<br/>C2 서버와 통신 시작"]
+    end
+
+    C ==>|프로세스 생성 및 환경변수 상속| D
+
+    classDef dropper fill:#fdecea,stroke:#d93025,stroke-width:2px,color:#333;
+    classDef payload fill:#e8f0fe,stroke:#1967d2,stroke-width:2px,color:#333;
+    classDef transition fill:#fef7e0,stroke:#f9ab00,stroke-width:3px,color:#333;
+
+    class A,B dropper;
+    class D,E,F payload;
+    class C transition;
 
 ## 5. 주요 기술적 특징 (Technical Analysis)
 
