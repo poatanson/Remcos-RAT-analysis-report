@@ -4,7 +4,7 @@
 * **분석 날짜:** 2026-08-23
 * **분석가:** [poatanson / son]
 * **악성코드 패밀리:** Remcos RAT (Dropper)
-* **요약:** 본 샘플은 VBScript/JScript 기반의 드로퍼로, WMI(`Win32_Process`)를 활용해 창을 숨긴 채 PowerShell을 실행함. 페이로드는 37개의 환경 변수로 분할(Fragmentation)되어 명령줄 길이 제한 및 시그니처 탐지를 우회하며, 최종적으로 .NET Reflection을 이용해 Remcos RAT를 메모리(Fileless)에 로드하여 실행함.
+* **요약:** 본 샘플은 VBScript 기반의 드로퍼로, WMI(`Win32_Process`)를 활용해 창을 숨긴 채 PowerShell을 실행함. 페이로드는 37개의 환경 변수로 분할(Fragmentation)되어 명령줄 길이 제한 및 시그니처 탐지를 우회하며, 최종적으로 .NET Reflection을 이용해 Remcos RAT를 메모리(Fileless)에 로드하여 실행함.
 
 ## 2. 기본 정보 (File Details)
 * **파일명:** `c5103eaa70a4a80176440a0e0dc75136a0e7bcfd9a68d7c8440a4d0edea72011.vbs` (또는 실제 확장자)
@@ -16,7 +16,7 @@
 * **파일 타입:** CSV text
 
 ## 3. 분석 환경
-* **OS:** Windows 10 Pro 22H2 (VMware/VirtualBox)
+* **OS:** Windows 10 Pro 22H2 (VirtualBox)
 
 ## 4. 실행 흐름도 (Execution Flow)
 ![](https://github.com/user-attachments/assets/4f25d88b-e5a7-4309-88cb-c98e71b65a68)
