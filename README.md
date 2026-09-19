@@ -90,6 +90,7 @@ opsonies.Run ballast, 0, True
 ' healthily : "winmgmts:\\.\root\cimv2"
 ' healthilyt: "Win32_ProcessStartup"
 ' echinocardium: "Win32_Process"
+```
 
 ## 6. 동적 분석 결과 (Dynamic Analysis)
 
