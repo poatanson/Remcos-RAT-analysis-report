@@ -1,0 +1,61 @@
+title: Hidden PowerShell Reflective .NET Assembly Loading
+id: 5a6a8fd8-3e62-4d3d-9cc4-1e1f2dd8f802
+status: experimental
+description: >
+  Detects PowerShell execution that combines hidden window execution or
+  execution policy bypass with reflective .NET assembly loading from a
+  Base64-decoded payload.
+author: SOC
+date: 2026-09-19
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+  - https://attack.mitre.org/techniques/T1620/
+
+logsource:
+  product: windows
+  category: process_creation
+
+detection:
+  selection_powershell:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+
+  selection_reflective_loading:
+    CommandLine|contains:
+      - '[Reflection.Assembly]::Load'
+      - 'Reflection.Assembly::Load'
+      - '[System.Reflection.Assembly]::Load'
+      - 'FromBase64String'
+      - '[Convert]::FromBase64String'
+
+  selection_suspicious_execution:
+    CommandLine|contains:
+      - '-ExecutionPolicy Bypass'
+      - '-ExecutionPolicy Unrestricted'
+      - '-ep Bypass'
+      - '-ep Unrestricted'
+      - '-WindowStyle Hidden'
+      - '-window hidden'
+      - '-w hidden'
+
+  condition: >
+    selection_powershell and
+    selection_reflective_loading and
+    selection_suspicious_execution
+
+falsepositives:
+  - Authorized PowerShell-based software deployment
+  - Enterprise endpoint management scripts
+  - Security testing and malware analysis environments
+  - Legitimate administrative automation using in-memory .NET assemblies
+
+level: high
+
+tags:
+  - attack.execution
+  - attack.t1059.001
+  - attack.defense-evasion
+  - attack.t1027
+  - attack.t1055
+  - attack.t1620
