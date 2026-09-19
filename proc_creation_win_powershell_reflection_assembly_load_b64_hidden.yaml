@@ -4,7 +4,7 @@ status: experimental
 description: >
   Detects PowerShell command lines that decode a Base64 payload and load it
   as a .NET assembly, combined with hidden window or execution policy bypass flags.
-author: SOC
+author: SON
 date: 2026-09-19
 references:
   - https://attack.mitre.org/techniques/T1059/001/
