@@ -55,11 +55,10 @@ falsepositives:
   - Security testing and malware analysis environments
 
 level: high
-
 tags:
   - attack.execution
   - attack.t1059.001
-  - attack.defense-evasion
+  - attack.stealth
   - attack.t1027
   - attack.t1140
   - attack.t1620
