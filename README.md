@@ -1,7 +1,7 @@
 # WMI 및 환경변수 분할 기법을 활용한 Remcos RAT 드로퍼
 
 ## 1. 개요 (Executive Summary)
-* **분석 날짜:** 2026-08-23
+* **분석 날짜:** 정적 분석 2026-08-23 / 동적 분석 2026-09-19
 * **분석가:** [poatanson / son]
 * **악성코드 패밀리:** Remcos RAT (Dropper)
 * **요약:** 본 샘플은 VBScript 기반의 드로퍼로, WMI(`Win32_Process`)를 활용해 창을 숨긴 채 PowerShell을 실행함. 페이로드는 37개의 환경 변수로 분할(Fragmentation)되어 명령줄 길이 제한 및 시그니처 탐지를 우회하며, 최종적으로 .NET Reflection을 이용해 Remcos RAT를 메모리(Fileless)에 로드하여 실행함.
@@ -27,7 +27,7 @@ flowchart TD
     B --> C[3. Hidden PowerShell Execution\nWin32_Process.Create 백그라운드 실행]
     C --> D[4. Payload Reassembly\n환경변수 읽기 및 Base64 문자열 재조합]
     D --> E[5. Fileless Execution\nReflection.Assembly::Load로 메모리 DLL 로드]
-    E --> F[6. RAT Injection & C2\nRemcos RAT 메모리 인젝션/드롭 후 C2 통신]
+    E --> F[6. RAT Injection & C2\n정적 분석 기준 · 동적 분석 미검증]
 
     style A fill:#fdecea,stroke:#d93025,stroke-width:2px
     style B fill:#fdecea,stroke:#d93025,stroke-width:2px
@@ -44,16 +44,6 @@ flowchart TD
 * 페이로드를 `P1`부터 `P37`까지 37조각으로 나누어 환경 변수에 할당.
 * **추출된 WMI 스크립트:**
 ```vbscript
-Set exophthalmy = GetObject(healthily)
-
-Set Acadia = exophthalmy.Get(healthilyt).SpawnInstance_ 
-Acadia.ShowWindow = 0 
-
-Set wistit = exophthalmy.Get(echinocardium)
-lotus = wistit.Create(ballast, Null, Acadia, lithobiid) 
-opsonies.Run ballast, 0, True 
-
-
 ' ==========================================================
 ' [1] WMI 객체 및 시작 옵션 초기화
 ' ==========================================================
@@ -143,8 +133,11 @@ VBS가 WMI(`Win32_Process`)로 실행을 요청했다는 점은 정적 분석 �
 | 커맨드라인 시작 | `"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"` | `powershell` |
 | 실행 계정 / 무결성 | `victim` / Medium | `victim` / Medium |
 
-두 프로세스의 LogonId가 동일(`0x34CEB`)하여 같은 로그온 세션에서 실행되었음.
-같은 페이로드를 두 경로로 실행한 이유는 확인하지 못함.
+두 경로는 5.1절에서 추출한 VBS의 실행 구조와 일치함. 스크립트는 WMI(`Win32_Process.Create`)로
+먼저 실행한 뒤 `WScript.Shell.Run`으로 같은 명령을 다시 실행하며, 로그의 생성 순서(WMI
+08:02:23.348 → `wscript.exe` 08:02:23.523)도 같음. 작업 디렉터리 차이도 코드로 설명됨: WMI 호출은
+현재 디렉터리 인자가 `Null`이라 `system32`에서, `Run`은 `wscript.exe`의 작업 디렉터리(샘플 폴더)를
+이어받은 것으로 보임. 코드 주석은 폴백이라 적었으나 로그상 두 프로세스가 모두 실행됨.
 
 ### 6.3 커맨드라인 분석
 
@@ -195,8 +188,7 @@ VBS가 WMI(`Win32_Process`)로 실행을 요청했다는 점은 정적 분석 �
 - 관찰된 `.ps1` 생성은 모두 `__PSScriptPolicyTest_*.ps1` 패턴이었으며, 이는 PowerShell이 시작할 때
   스크립트 정책 검사를 위해 만드는 임시 파일임. 악성코드와 무관한 분석용 PowerShell에서도 동일하게 생성됨
 - Defender(`mpam-*.exe`), 작업 스케줄러(`SA.DAT`), WMI 서비스(`WRITABLE.TST`) 관련 이벤트는 OS 정상 동작으로 제외함
-- 악성 체인이 만든 실행 파일이나 페이로드 파일은 관찰되지 않음. 단, Sysmon FileCreate는 규칙 기반이라
-  기록되지 않은 파일이 있을 수 있으므로 인메모리 로딩과 일치하는 정황일 뿐 확정 증거는 아님
+- Sysmon FileCreate는 규칙 기반이라 기록되지 않은 파일이 있을 수 있으므로 인메모리 로딩과 일치하는 정황일 뿐 확정 증거는 아님
 
 **DNS 조회 (Event ID 22)**
 - 08:02:22.306에 PID 1508로 `pub-378362a70f714a30b26c109732cabca4[.]r2[.]dev` 조회가 기록됨
@@ -212,7 +204,7 @@ VBS가 WMI(`Win32_Process`)로 실행을 요청했다는 점은 정적 분석 �
 | 프로세스 체인 | `wscript.exe` → `powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden` | 확정 |
 | 프로세스 체인 | `WmiPrvSE.exe` → `powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden` | 확정 |
 | 환경 변수 | 사용자 환경 변수 `P1`~`P37` (Base64 조각, `P1`은 PE 헤더로 시작) | 확정 |
-| 로드 대상 | `OtnmpxnddVnptbN.mpxnddVn::Otnmpxn` | 확정 (난독화 결과로 보이며 변종에서는 달라질 수 있음: 추측) |
+| 로드 대상 | `OtnmpxnddVnptbN.mpxnddVn::Otnmpxn` | 확정 (본 샘플 기준) |
 | 도메인 | `pub-378362a70f714a30b26c109732cabca4[.]r2[.]dev` | 후보 (귀속 미확정) |
 
 `powershell.exe` 자체의 해시는 정상 파일의 값이므로 IOC에서 제외함.
@@ -222,7 +214,6 @@ VBS가 WMI(`Win32_Process`)로 실행을 요청했다는 점은 정적 분석 �
 - **네트워크 행위 미검증**: 인터넷이 차단된 환경이라 C2 통신 여부는 확인하지 못함
 - **최종 페이로드 미확인**: 동적 분석 로그만으로는 로드된 어셈블리가 Remcos RAT임을 확인하지 못함
   (Remcos 판단은 정적 분석 결과에 근거)
-- **이중 실행 이유 미확인**: 두 경로로 동일 페이로드를 실행한 목적은 알 수 없음
 - **탐지 룰의 범위**: 커맨드라인에 로더 코드가 평문으로 남는 경우만 탐지함. `-EncodedCommand`나
   스크립트 파일 실행으로 변형되면 놓칠 수 있으며, Script Block Logging(Event ID 4104) 기반 룰로 보완해야 함
 - **로그 범위**: Sysmon 설정이 규칙 기반이라 모든 파일·레지스트리 이벤트가 기록되지는 않음
