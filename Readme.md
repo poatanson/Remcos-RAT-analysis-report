@@ -1,4 +1,4 @@
-# [악성코드 분석 보고서] WMI 및 환경변수 분할 기법을 활용한 Remcos RAT 드로퍼
+# WMI 및 환경변수 분할 기법을 활용한 Remcos RAT 드로퍼
 
 ## 1. 개요 (Executive Summary)
 * **분석 날짜:** 2026-08-23
