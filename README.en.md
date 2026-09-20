@@ -211,7 +211,7 @@ Only the payload fragments (`P1`–`P37`) are hidden in environment variables. T
 ### 6.6 Additional Observations
 
 **File creation (Event ID 11)**
-- The `.ps1` creations I checked all followed the `__PSScriptPolicyTest_*.ps1` pattern, which is a temporary file PowerShell creates at startup for its script-policy check. It is created the same way by an unrelated analyst-launched PowerShell
+- The `.ps1` creations that were checked all followed the `__PSScriptPolicyTest_*.ps1` pattern, which is a temporary file PowerShell creates at startup for its script-policy check. It is created the same way by an unrelated analyst-launched PowerShell
 - Events from Defender (`mpam-*.exe`), the task scheduler (`SA.DAT`), and the WMI service (`WRITABLE.TST`) were excluded as normal OS behavior
 - No executable or payload file created by the malicious chain was observed. However, Sysmon FileCreate is rule-based and some files may not have been recorded, so this is consistent with in-memory loading but is not conclusive evidence
 
