@@ -210,6 +210,7 @@ VBS가 WMI(`Win32_Process`)로 실행을 요청했다는 점은 정적 분석 �
 | 환경 변수 | 사용자 환경 변수 `P1`~`P37` (Base64 조각, `P1`은 PE 헤더로 시작) | 확정 |
 | 로드 대상 | `OtnmpxnddVnptbN.mpxnddVn::Otnmpxn` | 확정 (본 샘플 기준) |
 | 도메인 | `pub-378362a70f714a30b26c109732cabca4[.]r2[.]dev` | 후보 (귀속 미확정) |
+| 2단계 페이로드 (SHA-256) | `fd629cc6b872d9c34a8dd93cd537b7472cebeca7b84c4d077ee2283cdba9f060` | 확정 (환경 변수 복원 파일, 32비트 .NET, Defender: Ravartar!rfn) |
 
 `powershell.exe` 자체의 해시는 정상 파일의 값이므로 IOC에서 제외함.
 
